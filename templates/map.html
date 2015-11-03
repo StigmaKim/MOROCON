@@ -1,0 +1,50 @@
+{% extends "template.html" %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
+    <meta name="author" content="GeeksLabs">
+    <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
+  <body>
+  	  {% block content %}
+  	  <head>
+  	  <link href="/static/css/map.css" rel="stylesheet">
+  	  </head>
+  	  	<h3>지도 선택</h3>
+  	  	<div class="row" id="map">
+  	  		<div class="col-md-3 map_img_wrapper">
+  	  			<div class="over"></div>
+  	  			<a><img src="/static/image/seoul.jpg"></a>
+  	  		</div>
+  			<div class="col-md-3 map_img_wrapper">
+  				<div class="over"></div>
+  			 	<a><img src="/static/image/tokyo.jpg"></a>
+  			</div>
+  			<div class="col-md-3 map_img_wrapper">
+  				<div class="over"></div>
+  			 	<a><img src="/static/image/paris.jpg"></a>
+  			</div>
+  			<div class="col-md-3 map_img_wrapper">
+  				<div class="over"></div>
+  			 	<a><img src="/static/image/prague.jpg"></a>
+  			</div>
+  			<div class="col-md-3 map_img_wrapper">
+  				<div class="over"></div>
+  			 	<a><img src="/static/image/eve.jpg"></a>
+  			</div>
+  			<div class="col-md-3 map_img_wrapper">
+  				<div class="over"></div>
+  			 	<a><img src="/static/image/seul.jpg"></a>
+  			</div>
+  			<div class="col-md-3 btn_wrapper">
+  			</div>
+  			<div class="next col-md-3 btn_wrapper">
+	  	  		<span class="btn">다음으로</span>
+	  	  	</div>
+  			</div>
+  	  	</div>
+	  {% endblock %}
+  </body>
+</html>
