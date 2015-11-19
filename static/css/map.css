@@ -1,6 +1,4 @@
 #map img {width:300px;height:200px;}
-#map .map_img_wrapper {margin-right:10px;margin-bottom:10px;}
-#map .over {position:absolute;background-color: rgba(0,0,0,.6);width:300px;height:200px;cursor:pointer}
+#map .over {position:absolute;width:300px;background-color: rgba(0,0,0,.6);height:200px;cursor:pointer}
 .next {text-align:center}
-#map .btn_wrapper {margin-right:20px;margin-bottom:10px;}
-#map {}
+#map .btn_wrapper {margin-bottom:10px;}

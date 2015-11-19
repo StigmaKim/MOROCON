@@ -10,11 +10,32 @@
   <body>
   	  {% block content %}
   	  <head>
-  	  <link href="/static/css/map.css" rel="stylesheet">
+  	  <link href="/static/css/mission_info.css" rel="stylesheet">
   	  </head>
   	  	<h3>탐색 정보 조회</h3>
   	  	<div class="row" id="mission_info">
-  	  		
+  	  		<div class="col-sm-6">
+  	  			<h4>이름 : </h4>
+  	  		</div>
+  	  		<div class="col-sm-6">
+  	  			<h4>현재 시간 : </h4>
+  	  		</div>
+  	  	</div>
+  	  	<div class="row">
+  	  		<div class="col-sm-6 map">
+  	  			<h4>지도</h4>
+  	  		</div>
+  	  		<div class="col-sm-3 person">
+  	  			<h4>발견되 사람</h4>
+  	  		</div>
+  	  	</div>
+  	  	<div class="row">
+  	  		<div class="col-sm-6">
+  	  			<h4>로봇</h4>
+  	  		</div>
+  	  		<div class="col-sm-6">
+  	  			<h4>제어</h4>
+  	  		</div>
   	  	</div>
 	  {% endblock %}
   </body>

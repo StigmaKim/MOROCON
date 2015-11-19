@@ -13,38 +13,62 @@
   	  <link href="/static/css/map.css" rel="stylesheet">
   	  </head>
   	  	<h3>지도 선택</h3>
-  	  	<div class="row" id="map">
-  	  		<div class="col-md-3 map_img_wrapper">
-  	  			<div class="over"></div>
-  	  			<a><img src="/static/image/seoul.jpg"></a>
-  	  		</div>
-  			<div class="col-md-3 map_img_wrapper">
-  				<div class="over"></div>
-  			 	<a><img src="/static/image/tokyo.jpg"></a>
-  			</div>
-  			<div class="col-md-3 map_img_wrapper">
-  				<div class="over"></div>
-  			 	<a><img src="/static/image/paris.jpg"></a>
-  			</div>
-  			<div class="col-md-3 map_img_wrapper">
-  				<div class="over"></div>
-  			 	<a><img src="/static/image/prague.jpg"></a>
-  			</div>
-  			<div class="col-md-3 map_img_wrapper">
-  				<div class="over"></div>
-  			 	<a><img src="/static/image/eve.jpg"></a>
-  			</div>
-  			<div class="col-md-3 map_img_wrapper">
-  				<div class="over"></div>
-  			 	<a><img src="/static/image/seul.jpg"></a>
-  			</div>
-  			<div class="col-md-3 btn_wrapper">
-  			</div>
-  			<div class="next col-md-3 btn_wrapper">
-	  	  		<span class="btn">다음으로</span>
-	  	  	</div>
-  			</div>
-  	  	</div>
+  	  	<form action="../robot_select/" method="post" name="map_select_form">
+  	  		<input type="hidden" value="{{name}}" name="name">
+  	  		<input type="hidden" name="map_name">
+	  	  	<div class="row" id="map">
+	  	  		<div class="btn map_img_wrapper">
+	  	  			<div class="over"></div>
+	  	  			<a class="map_img"><img src="/static/image/seoul.jpg"></a>
+	  	  		</div>
+	  			<div class="btn map_img_wrapper">
+	  				<div class="over"></div>
+	  			 	<a class="map_img"><img src="/static/image/tokyo.jpg"></a>
+	  			</div>
+	  			<div class="btn map_img_wrapper">
+	  				<div class="over"></div>
+	  			 	<a class="map_img"><img src="/static/image/paris.jpg"></a>
+	  			</div>
+	  			<div class="btn map_img_wrapper">
+	  				<div class="over"></div>
+	  			 	<a class="map_img"><img src="/static/image/prague.jpg"></a>
+	  			</div>
+	  			<div class="btn map_img_wrapper">
+	  				<div class="over"></div>
+	  			 	<a class="map_img"><img src="/static/image/eve.jpg"></a>
+	  			</div>
+	  			<div class="btn map_img_wrapper">
+	  				<div class="over"></div>
+	  			 	<a class="map_img"><img src="/static/image/seul.jpg"></a>
+	  			</div>
+	  			<div class="btn btn_wrapper">
+	  			</div>
+	  			<div class="next btn btn_wrapper">
+		  	  		<span class="btn"><a href="../robot_select">다음으로</a></span>
+		  	  	</div>
+	  		</div>
+	  	</form>
+  		<script type="text/javascript" src="static/js/jquery-1.7.min.js"></script>
+  		<script>
+		  $(document).ready(function() {
+			  	/* 지도 선택 효과 */
+				$(".map_img_wrapper").mouseover(function(){
+					$(this).children(".over").css("background-color", "rgba(0,0,0,.2)")
+				});
+			  $(".map_img_wrapper").mouseout(function(){
+				  	if(!$(this).children(".over").hasClass("selected"))
+						$(this).children(".over").css("background-color", "rgba(0,0,0,.6)")
+				});
+			  $(".map_img_wrapper").click(function(){
+				    $(".over").css("background-color","rgba(0,0,0,0.6)");
+				    $(".over").removeClass("selected");
+				    $(".over").addClass("nonselected");
+				    $(this).children(".over").removeClass("nonselected");
+				    $(this).children(".over").addClass("selected");
+					$(this).children(".over").css("background-color", "rgba(0,0,0,.2)")
+			  });
+		  });
+	  </script>
 	  {% endblock %}
   </body>
 </html>

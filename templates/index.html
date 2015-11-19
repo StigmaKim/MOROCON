@@ -4,35 +4,45 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
-    <meta name="author" content="GeeksLabs">
-    <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
+    <meta name="description" content="Robocon">
+    <meta name="author" content="Robocon">
+    <meta name="keyword" content="Robocon">
   <body>
   	  {% block content %}
   	  <head>
   	  <link href="/static/css/main.css" rel="stylesheet">
   	  </head>
-  	  	<h3>메인페이지</h3>
   	  	<div id="main">
-	  	  	<div class="row">
-	  	  		<h3>현재 탐색중
-	  	  		</h3>
-	  	  		<div class="mission btn">
-	  	  			미션1
+  	  		<div class="search_wrapper">
+		  	  	<div class="row past">	  	
+		  	  		<h3>Past Mission</h3>
+		  	  		<div class="mission">
+		  	  			<table>
+				  	  		<tr>
+				  	  		<th>Name</th>
+				  	  		<th>End Date</th>
+				  	  		</tr>
+			  	  		</table>
+		  	  		</div>
+		  	  	</div>
+		  	  	<div class="row current">
+		  	  		<h3>Current Mission</h3>
+		  	  		<div class="mission">
+			  	  		<table>
+				  	  		<tr>
+				  	  		<th>이름</th>
+				  	  		<th></th>
+				  	  		</tr>
+			  	  		</table>
+		  	  		</div>
+		  	  	</div>
+		  	  	<div class="nav">
+		  	  		<form action="../map/" method="post" name="mission_form">
+			  	  		<input type="text" class="form-control" name="name">
+		  	  			<a onclick="mission_form.submit()" class="btn">Create</a>
+	  	  			</form>
 	  	  		</div>
-	  	  		<div class="mission btn">
-	  	  			미션2
-	  	  		</div>
-	  	  		<div class="mission btn">
-	  	  			미션3
-	  	  		</div>
-	  	  	</div>
-	  	  	<div class="row new_mission">
-	  	  		<h3>새로운 탐색 추가</h3>
-	  	  		<div class="btn">
-	  	  			<h1>+</h1>
-	  	  		</div>
-	  	  	</div>
+			</div>
   	  	</div>
 	  {% endblock %}
   </body>
