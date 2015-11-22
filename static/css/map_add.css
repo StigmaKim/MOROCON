@@ -1,0 +1,5 @@
+#map_add table th {text-align:center}
+#map_add table input {width:300px;display:inline-block;}
+#map_add table {width:700px;margin-left:40px;margin-top:20px;margin-bottom:20px;}
+#map_add .add_div {width:700px;text-align:center}
+#map_add table tr.coord input  {width:100px;}

@@ -1,0 +1,59 @@
+{% extends "template.html" %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
+    <meta name="author" content="GeeksLabs">
+    <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
+  <body>
+  	  {% block content %}
+  	  <head>
+  	  <link href="/static/css/map_manage.css" rel="stylesheet">
+  	  <script>
+	  	function deleteMap(key){
+	  		if(confirm("정말 삭제하시겠습니까?")){
+		  	    $.ajax({
+		  	      type: "POST",
+		  	      url: "/map_delete/",
+		  	      dataType: 'html',
+		  	      data: JSON.stringify({ "key": key})
+		  	    })
+		  	    .done(function( data ) { // check why I use done
+		  	    	location.reload()
+		  	    });
+	  		}
+	  	};
+  	  </script>
+  	  </head>
+  	  	<h3>지도 관리</h3>
+  	  	<div class="row" id="map_manage">
+  	  		<table class="table">
+  	  			<tr>
+	  	  			<th>지도명</th>
+	  	  			<th>지도 크기</th>
+	  	  			<th>위험 지역</th>
+	  	  			<th>이미지</th>
+	  	  			<th>기타</th>
+  	  			</tr>
+  	  			{% for r in result %}
+  	  			<tr>
+  	  				<td>{{r.name}}</td>
+  	  				<td>({{r.map_x}}, {{r.map_y}})</td>
+  	  				<td>({{r.map_danger1_x}}, {{r.map_danger1_y}})<br>
+  	  					  ({{r.map_danger2_x}}, {{r.map_danger2_y}})<br>
+  	  					  ({{r.map_danger3_x}}, {{r.map_danger3_y}})
+  	  				</td>
+  	  				<td><img src="../show_image?key={{r.key}}">{{r.image}}</td>
+  	  				<td><a class="btn btn-primary delete_btn" onclick="deleteMap('{{r.key}}')">삭제</a></td>
+  	  			</tr>
+  	  			{% endfor %}
+  	  		</table>
+		</div>
+		<div class="add_div">
+			<a class="btn btn btn-primary" href="../map_add">추가하기</a>
+		</div>
+	  {% endblock %}
+  </body>
+</html>

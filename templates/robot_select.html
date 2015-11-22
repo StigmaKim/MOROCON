@@ -1,0 +1,38 @@
+{% extends "template.html" %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
+    <meta name="author" content="GeeksLabs">
+    <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
+  <body>
+  	  {% block content %}
+  	  <head>
+  	  <link href="/static/css/map.css" rel="stylesheet">
+  	  </head>
+  	  	<h3>로봇 선택</h3>
+  	  	<div class="row" id="map">
+  	  		<table class="table">
+  	  			<tr>
+	  	  			<th>로봇이름</th>
+	  	  			<th>시리얼</th>
+	  	  			<th>선택</th>
+  	  			</tr>
+  	  			{% for r in result %}
+  	  			<tr>
+  	  				<td>{{r.name}}</td>
+  	  				<td>{{r.serial}}</td>
+  	  				<td><a class="btn btn-primary delete_btn">선택</a></td>
+  	  			</tr>
+  	  			{% endfor %}
+  	  		</table>
+  			<div class="next btn btn_wrapper">
+	  	  		<span class="btn"><a href="../search?map_id=1">다음으로</a></span>
+	  	  	</div>
+  		</div>
+  		<script type="text/javascript" src="static/js/jquery-1.7.min.js"></script>
+	  {% endblock %}
+  </body>
+</html>

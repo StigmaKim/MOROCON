@@ -1,0 +1,60 @@
+{% extends "template.html" %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
+    <meta name="author" content="GeeksLabs">
+    <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
+  <body>
+  	  {% block content %}
+  	  <head>
+  	  <link href="/static/css/map_add.css" rel="stylesheet">
+  	  </head>
+  	  	<h3>지도 추가</h3>
+  	  	<div class="row" id="map_add">
+  	  		<form name="map_add_form" action="../map_add_pro/" method="post" enctype='multipart/form-data'>
+	  	  		<table class="table">
+	  	  			<tr>
+	  	  			<th>지도 이름</th>
+	  	  			<td><input type="text" class="form-control" name="name"></td>
+	  	  			</tr>
+	  	  			<tr class="coord">
+	  	  			<th>지도 크기</th>
+	  	  			<td>X : <input type="text" class="form-control" class="map_size" name="map_x"> Y : <input type="text" class="form-control" class="map_size" name="map_y"></td>
+	  	  			</tr>
+	  	  			<tr class="coord">
+	  	  			<th>위험 지역 위치1</th>
+	  	  			<td>X : <input type="text" class="form-control" class="map_size" name="map_danger1_x"> Y : <input type="text" class="form-control" class="map_size" name="map_danger1_y"></td>
+	  	  			</tr>
+	  	  			<tr class="coord">
+	  	  			<th>위험 지역 위치2</th>
+	  	  			<td>X : <input type="text" class="form-control" class="map_size" name="map_danger2_x"> Y : <input type="text" class="form-control" class="map_size" name="map_danger2_y"></td>
+	  	  			</tr>
+	  	  			<tr class="coord">
+	  	  			<th>위험 지역 위치3</th>
+	  	  			<td>X : <input type="text" class="form-control" class="map_size" name="map_danger3_x"> Y : <input type="text" class="form-control" class="map_size" name="map_danger3_y"></td>
+	  	  			</tr>
+	  	  			<tr>
+	  	  			<th>사진</th>
+	  	  			<td><input type="file" name="image"></td>
+	  	  			</tr>
+	  	  		</table>
+	  	  		<div class="add_div">
+					<a class="btn btn btn-primary" onclick="map_add_form.submit()">추가하기</a>
+				</div>
+			</form>
+		</div>
+  		<script type="text/javascript" src="static/js/jquery-1.7.min.js"></script>
+  		<script>
+  			$(document).ready(function() {
+  				$(".rec").click({
+  					alert("A");
+  					$(".rec").animate({right:"+=50"}, 1000);
+  				});
+  			}
+  		</script>
+	  {% endblock %}
+  </body>
+</html>

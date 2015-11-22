@@ -1,0 +1,4 @@
+#robot_add table th {text-align:center}
+#robot_add table input {width:300px;display:inline-block;}
+#robot_add table {width:700px;margin-left:40px;margin-top:20px;margin-bottom:20px;}
+#robot_add .add_div {width:700px;text-align:center}
