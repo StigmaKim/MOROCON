@@ -8,3 +8,5 @@
 .nav {}
 .new_mission div {width:200px;height:100px;background-color:#cdcdcd;}
 .new_mission a{color:#797979}
+.mission table th.name {width:100px;}
+.mission table th.date {width:230px;}

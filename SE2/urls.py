@@ -4,7 +4,7 @@ from django.conf.urls.defaults import patterns, include, url
 # from django.contrib import admin
 # admin.autodiscover()
 from Robocon.view import main, map, missionInfo, search, mapManage, mapAdd, mapAddPro, mapDelete, robot, robotAdd,\
-    robotAddPro, robotSelectForm
+    robotAddPro, robotSelectForm, showImage, missionAdd, mapSelect
 from django.http.request import HttpRequest
 
 urlpatterns = patterns('',
@@ -12,15 +12,18 @@ urlpatterns = patterns('',
                        url(r'^main/', main),
                        url(r'^map/', map),
                        url(r'^mission_info/', missionInfo),
+                       url(r'^mission_add/', missionAdd),
                        url(r'^search/', search),
                        url(r'^map_manage/', mapManage),
                        url(r'^map_add/', mapAdd),
                        url(r'^map_add_pro/', mapAddPro),
+                       url(r'^map_select/', mapSelect),
                        url(r'^map_delete/', mapDelete),
                        url(r'^robot/', robot),
                        url(r'^robot_add/', robotAdd),
                        url(r'^robot_add_pro/', robotAddPro),
-                       url(r'^robot_select/', robotSelectForm)
+                       url(r'^robot_select/', robotSelectForm),
+                       url(r'^show_image', showImage)
     # Examples:
     # url(r'^$', 'SE2.views.home', name='home'),
     # url(r'^SE2/', include('SE2.foo.urls')),

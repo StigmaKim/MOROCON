@@ -13,39 +13,20 @@
   	  <link href="/static/css/map.css" rel="stylesheet">
   	  </head>
   	  	<h3>지도 선택</h3>
-  	  	<form action="../robot_select/" method="post" name="map_select_form">
-  	  		<input type="hidden" value="{{name}}" name="name">
-  	  		<input type="hidden" name="map_name">
+  	  	<form action="../map_select/" method="post" name="map_select_form">
+  	  		<input type="hidden" value="{{key}}" name="key">
+  	  		<input type="hidden" name="selected_map_key" class="selected_map_key">
 	  	  	<div class="row" id="map">
-	  	  		<div class="btn map_img_wrapper">
-	  	  			<div class="over"></div>
-	  	  			<a class="map_img"><img src="/static/image/seoul.jpg"></a>
-	  	  		</div>
-	  			<div class="btn map_img_wrapper">
-	  				<div class="over"></div>
-	  			 	<a class="map_img"><img src="/static/image/tokyo.jpg"></a>
-	  			</div>
-	  			<div class="btn map_img_wrapper">
-	  				<div class="over"></div>
-	  			 	<a class="map_img"><img src="/static/image/paris.jpg"></a>
-	  			</div>
-	  			<div class="btn map_img_wrapper">
-	  				<div class="over"></div>
-	  			 	<a class="map_img"><img src="/static/image/prague.jpg"></a>
-	  			</div>
-	  			<div class="btn map_img_wrapper">
-	  				<div class="over"></div>
-	  			 	<a class="map_img"><img src="/static/image/eve.jpg"></a>
-	  			</div>
-	  			<div class="btn map_img_wrapper">
-	  				<div class="over"></div>
-	  			 	<a class="map_img"><img src="/static/image/seul.jpg"></a>
-	  			</div>
-	  			<div class="btn btn_wrapper">
-	  			</div>
-	  			<div class="next btn btn_wrapper">
-		  	  		<span class="btn"><a href="../robot_select">다음으로</a></span>
-		  	  	</div>
+	  	  		{% for r in result %}
+	  	  			<div class="btn map_img_wrapper">
+	  	  				<input type="hidden" name="map_key" class="map_key" value="{{r.key}}">
+		  	  			<div class="over">이름 : {{r.name}} <br>지도 크기 : ({{r.map_x}}, {{r.map_y}})</div>
+		  	  			<a class="map_img"><img src="/show_image?key={{r.key}}"></a>
+		  	  		</div>
+	  	  		{% endfor %}
+	  		</div>
+	  		<div class="row">
+	  			<a class="btn btn-primary" onclick="map_select_form.submit()">선택</a>
 	  		</div>
 	  	</form>
   		<script type="text/javascript" src="static/js/jquery-1.7.min.js"></script>
@@ -66,6 +47,7 @@
 				    $(this).children(".over").removeClass("nonselected");
 				    $(this).children(".over").addClass("selected");
 					$(this).children(".over").css("background-color", "rgba(0,0,0,.2)")
+					$('.selected_map_key').val($(this).children(".map_key").val())
 			  });
 		  });
 	  </script>

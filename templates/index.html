@@ -21,6 +21,7 @@
 				  	  		<tr>
 				  	  		<th>Name</th>
 				  	  		<th>End Date</th>
+				  	  		<th class="select"></th>
 				  	  		</tr>
 			  	  		</table>
 		  	  		</div>
@@ -30,14 +31,22 @@
 		  	  		<div class="mission">
 			  	  		<table>
 				  	  		<tr>
-				  	  		<th>이름</th>
-				  	  		<th></th>
+				  	  		<th class="name">Name</th>
+				  	  		<th class="date">Start Date</th>
+				  	  		<th class="select"></th>
 				  	  		</tr>
+				  	  		{% for r in current %}
+			  	  			<tr>
+		  	  				<td>{{r.name}}</td>
+		  	  				<td>{{r.start_date}}</td>
+		  	  				<td><a class="btn-primary btn" href="../mission_info?key={{r.key}}">선택</a></td>
+			  	  			</tr>
+			  	  			{% endfor %}
 			  	  		</table>
 		  	  		</div>
 		  	  	</div>
 		  	  	<div class="nav">
-		  	  		<form action="../map/" method="post" name="mission_form">
+		  	  		<form action="../mission_add/" method="post" name="mission_form">
 			  	  		<input type="text" class="form-control" name="name">
 		  	  			<a onclick="mission_form.submit()" class="btn">Create</a>
 	  	  			</form>

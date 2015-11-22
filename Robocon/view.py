@@ -13,6 +13,10 @@ from Robocon.MapManager import MapManager
 import logging
 from Robocon.RobotManager import RobotManager
 from Robocon.MissionManager import MissionManager
+from django.http import HttpResponse, HttpResponseRedirect
+from Robocon.ImgHandler import ImgHandler
+from google.appengine.api import images
+from Robocon.models import Mission
 
 try:
     import json
@@ -24,20 +28,55 @@ MapManagerIns = MapManager()
 MissionManagerIns = MissionManager() 
     
 def main(request):
-    return render_to_response('index.html')
+    currentMissionList = MissionManagerIns.getCurrentMissionList()
+    template_values = {'current': currentMissionList}
+    
+    return render_to_response('index.html', template_values)
+
+@csrf_exempt
+def missionAdd(request):
+    name = request.POST['name']
+    
+    mission = Mission(name = name)
+    mission.put()
+    
+    url = '/main'
+    return HttpResponseRedirect(url)
 
 @csrf_exempt
 def map(request):
-    name = request.POST['name']
-    template_values = {'name': name}
+    mapList = MapManagerIns.getMapList()
+    key = request.GET['key']
+    
+    template_values = {'result': mapList, 'key':key}
     
     return render_to_response('map.html', template_values)
+
+@csrf_exempt
+def mapSelect(request):
+    key = request.POST['key']
+    map_key = request.POST['selected_map_key']
+    mission = MissionManagerIns.getMission(key)
+    mission.map_key = map_key
+    
+    mission.put()
+        
+    url = '/mission_info?key='+key
+    return HttpResponseRedirect(url)
 
 def search(request):
     return render_to_response('search.html')
 
 def missionInfo(request):
-    return render_to_response('mission_info.html')
+    key = request.GET['key']
+    mission = MissionManagerIns.getMission(key)
+    map = None
+    
+    if(mission.map_key != None) :
+        map = MissionManagerIns.getMap(mission)
+    
+    template_values = {'mission': mission, 'map':map}
+    return render_to_response('mission_info.html', template_values)
 
 def mapManage(request):
     mapList = MapManagerIns.getMapList()
@@ -49,6 +88,10 @@ def mapAdd(request):
 
 @csrf_exempt
 def mapAddPro(request):
+    imgHandlerIns = ImgHandler()
+    
+    image = request.FILES['image'].read()
+    
     map = Map(
               name = request.POST['name'],
               map_x = int(request.POST['map_x']),
@@ -61,6 +104,7 @@ def mapAddPro(request):
               map_danger3_y = int(request.POST['map_danger3_y']),
               date = timezone.now()
               )
+    map.image = db.Blob(images.resize(image, 480))
     
     MapManagerIns.addMap(map)
     
@@ -106,4 +150,14 @@ def robotAddPro(request):
     url = '/robot'
     return HttpResponseRedirect(url)
 
-        
+def showImage(request):
+    map = db.get(request.GET['key'])
+    
+    #build your response
+    response = HttpResponse(map.image)
+    # set the content type to png because that's what the Google images api 
+    # stores modified images as by default
+    response['Content-Type'] = 'image/png'
+    # set some reasonable cache headers unless you want the image pulled on every request
+    response['Cache-Control'] = 'max-age=7200'
+    return response      
