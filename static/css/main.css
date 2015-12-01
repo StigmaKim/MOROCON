@@ -1,10 +1,11 @@
 #main {margin-left:20px;}
 #main .search_wrapper {width:800px;display:inline-block;}
 #main .search_wrapper .past {width:390px;float:left}
-#main .search_wrapper .current {width:390px;float:left}
+#main .search_wrapper .current {width:450px;float:left}
 #main .search_wrapper .current .next {font-size:14pt;color:#222}
 #main .search_wrapper .current .next a {color:#222}
 .mission {width:350px;height:410px;background-color:#cdcdcd;margin-bottom:10px;}
+.current .mission {width:450px;}
 .nav {}
 .new_mission div {width:200px;height:100px;background-color:#cdcdcd;}
 .new_mission a{color:#797979}

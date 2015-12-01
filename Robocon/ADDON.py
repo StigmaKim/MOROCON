@@ -3,7 +3,8 @@ Created on 2015. 11. 29.
 
 @author: HANJU
 '''
-
+from Robocon.MissionManager import MissionManager
+from Robocon.MapManager import MapManager
 
 class ADDON(object):
 
@@ -98,8 +99,7 @@ class ADDON(object):
 			self.heuristic = 0
 			self.depth = 0
 			self.parent = None
-			
-			
+						
 class Map(object):
 	def __init__(self, width, height, hazardList):
 		self.width = width
@@ -129,11 +129,7 @@ class Heuristic():
 		result = abs((tx - x)+(ty - y))
 		return result
 	
-
-
-	
 def main():
-	
 	WIDTH = 7
 	HEIGHT = 8
 	HAZARD = [[0,2],[1,0],[1,2],[2,0],[2,5],[3,1],[3,3],[4,5],[5,3],[5,5],[6,3],[7,4]]
@@ -146,10 +142,17 @@ def main():
 	tx = TARGET[0]
 	ty = TARGET[1]
 	
-	test_MAP = Map(WIDTH, HEIGHT, HAZARD)
-	test_ADDON = ADDON(test_MAP, 500)
-	test_PATH = test_ADDON.findPath(sx, sy, tx, ty)
-	print test_PATH
+	MAP = MapManager.getMapInfo(MapManager())
+	
+	MAP.width = 15
+	MAP.height = 17
+	MAP.hazard = HAZARD
+	
+	ADDONIns = ADDON(MAP, 500)
+	PATH = ADDONIns.findPath(sx, sy, tx, ty)
+	
+	MissionManager.start_Explore(MissionManager(),PATH)
+	print PATH
 
 	
 if __name__ == '__main__':

@@ -29,6 +29,8 @@ class RobotDao(object):
         robot.put()
     def getAll(self):
         return Robot.all()
+    def get(self, key):
+        return db.get(key)
         
         
         

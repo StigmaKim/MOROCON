@@ -10,29 +10,44 @@
   <body>
   	  {% block content %}
   	  <head>
-  	  <link href="/static/css/map.css" rel="stylesheet">
+  	  <link href="/static/css/robot.css" rel="stylesheet">
   	  </head>
   	  	<h3>로봇 선택</h3>
-  	  	<div class="row" id="map">
-  	  		<table class="table">
-  	  			<tr>
-	  	  			<th>로봇이름</th>
-	  	  			<th>시리얼</th>
-	  	  			<th>선택</th>
-  	  			</tr>
-  	  			{% for r in result %}
-  	  			<tr>
-  	  				<td>{{r.name}}</td>
-  	  				<td>{{r.serial}}</td>
-  	  				<td><a class="btn btn-primary delete_btn">선택</a></td>
-  	  			</tr>
-  	  			{% endfor %}
-  	  		</table>
-  			<div class="next btn btn_wrapper">
-	  	  		<span class="btn"><a href="../search?map_id=1">다음으로</a></span>
-	  	  	</div>
+  	  	<div class="row" id="robot_select">
+  	  		<form method="post" name="robot_select_form" action="../robot_select_pro/">
+	   	  		<table class="table">
+	  	  			<tr>
+		  	  			<th>로봇이름</th>
+		  	  			<th>시리얼</th>
+		  	  			<th>선택</th>
+	  	  			</tr>
+	  	  			{% for r in result %}
+	  	  			<tr>
+	  	  				<td>{{r.name}}</td>
+	  	  				<td>{{r.serial}}</td>
+	  	  				<td>
+	  	  				<a class="btn btn-primary select_btn">선택</a>
+	  	  				<input type="hidden" value="{{r.key}}" name="robot_key" class="robot_key">
+	  	  				</td>
+	  	  			</tr>
+	  	  			{% endfor %}
+	  	  		</table>
+	  			<div class="next btn btn_wrapper">
+	  				<input type="hidden" value="{{key}}" name="key">
+	  				<input type="hidden" value="{{r.key}}" name="selected_robot_key" class="selected_robot_key">
+		  	  		<span class="btn"><a class="btn btn-primary submit" onclick="robot_select_form.submit()">적용하기</a></span>
+		  	  	</div>
+	  	  	</form>
   		</div>
   		<script type="text/javascript" src="static/js/jquery-1.7.min.js"></script>
+  		<script>
+		  $(document).ready(function() {
+			  $(".select_btn").click(function(){
+				   alert("선택되었습니다.");
+				   $('.selected_robot_key').val($(this).siblings(".robot_key").val())
+			  });
+		  });
+		</script>		  
 	  {% endblock %}
   </body>
 </html>

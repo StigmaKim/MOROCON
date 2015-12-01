@@ -7,41 +7,390 @@
     <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
     <meta name="author" content="GeeksLabs">
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
-  <body>
   	  {% block content %}
   	  <head>
   	  <link href="/static/css/mission_info.css" rel="stylesheet">
   	  </head>
+  	    <body onload="init({{map.map_x}}, {{map.map_y}}, {{map.map_danger1_x}}, {{map.map_danger1_y}}, {{map.map_danger2_x}}, {{map.map_danger2_y}}, {{map.map_danger3_x}}, {{map.map_danger3_y}}, {{map.map_danger4_x}}, {{map.map_danger4_y}}, {{map.map_danger5_x}}, {{map.map_danger5_y}}, {{map.map_danger6_x}}, {{map.map_danger6_y}}, {{map.map_danger7_x}}, {{map.map_danger7_y}},{{map.map_danger8_x}},{{map.map_danger8_y}},{{map.map_danger9_x}},{{map.map_danger9_y}},{{map.map_danger10_x}},{{map.map_danger10_y}})">
+  	  	<input type="hidden" class="map_key" value="{{map.key}}">
   	  	<div class="row" id="mission_info">
   	  		<div class="col-sm-7">
-  	  			<h4>이름 : {{mission.name}} </h4>
+  	  			<h4><strong>이름 :</strong> {{mission.name}} </h4>
   	  		</div>
   	  		<div class="col-sm-7">
-  	  			<h4>미션 시작 시간 : {{mission.start_date}}</h4>
+  	  			<h4><strong>미션 시작 시간 :</strong> {{mission.start_date}}</h4>
   	  		</div>
   	  	</div>
   	  	<div class="row">
-  	  		<div class="col-sm-7 map">
+  	  	<div class="col-sm-7 map">
   	  			{% if map%}
-  	  				<img src="../show_image?key={{map.key}}" class="map_img">
+				    <canvas id="canvas" width="700" height="600" style="opacity:1">
+				     이브라우저는 html5의 canvas요소를 지원하지 않습니다.
+				    </canvas>
   	  			{% else %}
-  	  				<h4>지도</h4>
+  	  				<h4><strong>지도</strong></h4>
   	  				<a href="../map?key={{mission.key}}" class="map_add_btn"><img src="/static/image/plus_btn.png"></a>
   	  			{% endif %}
   	  		</div>
   	  		<div class="col-sm-3 person">
-  	  			<h4>발견되 사람</h4>
+  	  			<h4><strong>발견된 사람</strong></h4>
+  	  			<canvas id="clock"></canvas>
   	  		</div>
   	  	</div>
   	  	<div class="row">
-  	  		<div class="col-sm-7">
-  	  			<h4>로봇</h4>
+  	  		<div class="col-sm-7 robot">
+  	  			<h4><strong>로봇</strong></h4>
+  	  			{% if robot %}
+  	  				로봇 이름 : {{robot.name}}<br>
+  	  				시리얼 : {{ robot.serial }}
+  	  			{% else %}
+  	  				<a href="../robot_select?key={{mission.key}}"><img src="/static/image/plus_btn.png"></a>
+  	  			{% endif %}
   	  		</div>
-  	  		<div class="col-sm-7">
-  	  			<h4>제어</h4>
+  	  		<div class="col-sm-3 control">
+  	  			<h4><strong>제어</strong></h4>
+  	  			<div>
+  	  				<strong>시작위치</strong><br>
+  	  				x : <input type="text" name="start_x"><br> y : <input type="text" name="start_y">
+  	  				<br>
+  	  				<strong>목표지점</strong><br>
+  	  				x : <input type="text" name="dept_x"><br> y : <input type="text" name="dept_y">
+  	  				<a class="btn btn-primary" onclick="startMission()">탐색시작</a>
+  	  				<a class="btn btn-primary">미션종료</a>
+  	  				<br>
+  	  			</div>
   	  		</div>
   	  	</div>
-	  {% endblock %}
+  	  	<script type="text/javascript" src="static/js/jquery-1.7.min.js"></script>
+  	  	<script>
+	  	  	/* 시계 */
+	  	  function clock(){
+	  		  var now = new Date();
+	  		  var ctx = document.getElementById('clock').getContext('2d');
+	  		  ctx.save();
+	  		  ctx.clearRect(0,0,150,150);
+	  		  ctx.translate(75,75);
+	  		  ctx.scale(0.4,0.4);
+	  		  ctx.rotate(-Math.PI/2);
+	  		  ctx.strokeStyle = "black";
+	  		  ctx.fillStyle = "white";
+	  		  ctx.lineWidth = 8;
+	  		  ctx.lineCap = "round";
+	
+	  		  // Hour marks
+	  		  ctx.save();
+	  		  for (var i=0;i<12;i++){
+	  		    ctx.beginPath();
+	  		    ctx.rotate(Math.PI/6);
+	  		    ctx.moveTo(100,0);
+	  		    ctx.lineTo(120,0);
+	  		    ctx.stroke();
+	  		  }
+	  		  ctx.restore();
+	
+	  		  // Minute marks
+	  		  ctx.save();
+	  		  ctx.lineWidth = 5;
+	  		  for (i=0;i<60;i++){
+	  		    if (i%5!=0) {
+	  		      ctx.beginPath();
+	  		      ctx.moveTo(117,0);
+	  		      ctx.lineTo(120,0);
+	  		      ctx.stroke();
+	  		    }
+	  		    ctx.rotate(Math.PI/30);
+	  		  }
+	  		  ctx.restore();
+	  		 
+	  		  var sec = now.getSeconds();
+	  		  var min = now.getMinutes();
+	  		  var hr  = now.getHours();
+	  		  hr = hr>=12 ? hr-12 : hr;
+	
+	  		  ctx.fillStyle = "black";
+	
+	  		  // write Hours
+	  		  ctx.save();
+	  		  ctx.rotate( hr*(Math.PI/6) + (Math.PI/360)*min + (Math.PI/21600)*sec )
+	  		  ctx.lineWidth = 14;
+	  		  ctx.beginPath();
+	  		  ctx.moveTo(-20,0);
+	  		  ctx.lineTo(80,0);
+	  		  ctx.stroke();
+	  		  ctx.restore();
+	
+	  		  // write Minutes
+	  		  ctx.save();
+	  		  ctx.rotate( (Math.PI/30)*min + (Math.PI/1800)*sec )
+	  		  ctx.lineWidth = 10;
+	  		  ctx.beginPath();
+	  		  ctx.moveTo(-28,0);
+	  		  ctx.lineTo(112,0);
+	  		  ctx.stroke();
+	  		  ctx.restore();
+	  		 
+	  		  // Write seconds
+	  		  ctx.save();
+	  		  ctx.rotate(sec * Math.PI/30);
+	  		  ctx.strokeStyle = "#D40000";
+	  		  ctx.fillStyle = "#D40000";
+	  		  ctx.lineWidth = 6;
+	  		  ctx.beginPath();
+	  		  ctx.moveTo(-30,0);
+	  		  ctx.lineTo(83,0);
+	  		  ctx.stroke();
+	  		  ctx.beginPath();
+	  		  ctx.arc(0,0,10,0,Math.PI*2,true);
+	  		  ctx.fill();
+	  		  ctx.beginPath();
+	  		  ctx.arc(95,0,10,0,Math.PI*2,true);
+	  		  ctx.stroke();
+	  		  ctx.fillStyle = "rgba(0,0,0,0)";
+	  		  ctx.arc(0,0,3,0,Math.PI*2,true);
+	  		  ctx.fill();
+	  		  ctx.restore();
+	
+	  		  ctx.beginPath();
+	  		  ctx.lineWidth = 14;
+	  		  ctx.strokeStyle = '#325FA2';
+	  		  ctx.arc(0,0,142,0,Math.PI*2,true);
+	  		  ctx.stroke();
+	
+	  		  ctx.restore();
+	
+	  		  window.requestAnimationFrame(clock);
+	  		}
+
+  		    window.requestAnimationFrame(clock);
+	  	  
+	  	 	var canvas = document.getElementById("canvas");
+		   	var ctx = canvas.getContext("2d");
+		  	var robot;
+		  	
+		  	ctx.beginPath();
+		  	
+		  	step=30;
+		  	width=700;
+		  	height=600;
+		  	robotSize = 15;
+		  	
+		  	function drawRectangle(myRectangle, context) {
+		        context.beginPath();
+		        context.rect(myRectangle.x, myRectangle.y, myRectangle.width, myRectangle.height);
+		        context.fillStyle = '#8ED6FF';
+		        context.fill();
+		        context.lineWidth = myRectangle.borderWidth;
+		        context.strokeStyle = 'black';
+		        context.stroke();
+		     }
+		  	function drawRedRectangle(myRectangle, context) {
+		        context.beginPath();
+		        context.rect(myRectangle.x, myRectangle.y, myRectangle.width, myRectangle.height);
+		        context.fillStyle = 'red';
+		        context.fill();
+		        context.lineWidth = myRectangle.borderWidth;
+		        context.strokeStyle = 'black';
+		        context.stroke();
+		     }
+		  	function drawGrayRectangle(myRectangle, context) {
+		        context.beginPath();
+		        context.rect(myRectangle.x, myRectangle.y, myRectangle.width, myRectangle.height);
+		        context.fillStyle = 'gray';
+		        context.fill();
+		        context.lineWidth = myRectangle.borderWidth;
+		        context.strokeStyle = 'black';
+		        context.stroke();
+		     }
+		  	
+		  	function init(x,y, danger1_x, danger1_y, danger2_x, danger2_y, danger3_x, danger3_y, danger4_x, danger4_y, danger5_x, danger5_y, danger6_x, danger6_y, danger7_x, danger7_y, danger8_x, danger8_y, danger9_x, danger9_y, danger10_x, danger10_y){
+		  		/* 전역변수에 할당 */
+		  		map_x = x;
+		  		map_y = y;
+		  		// 맵 그리기
+		  		drawMap(x,y);
+		  		// 위험지역 표시
+		  		drawDanger(danger1_x, danger1_y, danger2_x, danger2_y, danger3_x, danger3_y, danger4_x, danger4_y, danger5_x, danger5_y, danger6_x, danger6_y, danger7_x, danger7_y, danger8_x, danger8_y, danger9_x, danger9_y, danger10_x, danger10_y);
+		  		// 시계 생성
+		  		clock();
+		  	}
+		  	function drawMap(x,y){
+			  	/* draw horizon line*/
+			  	for(i=0;i<=y;i++){
+			  		ctx.moveTo(0,height-i*step);
+		            ctx.lineTo(x*step,height-i*step);
+		            ctx.strokeStyle = 'black';
+		            ctx.stroke(); 
+			  	}
+			  	/* draw vertical line */
+			  	for(i=0;i<=x;i++){
+			  		ctx.moveTo(i*step,height);
+		            ctx.lineTo(i*step,height-y*step);
+		            ctx.strokeStyle = 'black';
+		            ctx.stroke(); 	
+			  	}
+		  	}
+		  	function drawDanger(danger1_x, danger1_y, danger2_x, danger2_y, danger3_x, danger3_y, danger4_x, danger4_y, danger5_x, danger5_y, danger6_x, danger6_y, danger7_x, danger7_y, danger8_x, danger8_y, danger9_x, danger9_y, danger10_x, danger10_y){
+		  		danger1 = {
+		  		        x: danger1_x*step-robotSize/2,
+		  		        y: height-robotSize-danger1_y*step+robotSize/2,
+		  		        width: 15,
+		  		        height: 15,
+		  		        borderWidth: 1
+		  		      };
+		  		danger2 = {
+		  		        x: danger2_x*step-robotSize/2,
+		  		        y: height-robotSize-danger2_y*step+robotSize/2,
+		  		        width: 15,
+		  		        height: 15,
+		  		        borderWidth: 1
+		  		      };
+		  		danger3 = {
+		  		        x: danger3_x*step-robotSize/2,
+		  		        y: height-robotSize-danger3_y*step+robotSize/2,
+		  		        width: 15,
+		  		        height: 15,
+		  		        borderWidth: 1
+		  		      };
+		  		danger4 = {
+		  		        x: danger4_x*step-robotSize/2,
+		  		        y: height-robotSize-danger4_y*step+robotSize/2,
+		  		        width: 15,
+		  		        height: 15,
+		  		        borderWidth: 1
+		  		      };
+		  		danger5 = {
+		  		        x: danger5_x*step-robotSize/2,
+		  		        y: height-robotSize-danger5_y*step+robotSize/2,
+		  		        width: 15,
+		  		        height: 15,
+		  		        borderWidth: 1
+		  		      };
+		  		danger6 = {
+		  		        x: danger6_x*step-robotSize/2,
+		  		        y: height-robotSize-danger6_y*step+robotSize/2,
+		  		        width: 15,
+		  		        height: 15,
+		  		        borderWidth: 1
+		  		      };
+		  		danger7 = {
+		  		        x: danger7_x*step-robotSize/2,
+		  		        y: height-robotSize-danger7_y*step+robotSize/2,
+		  		        width: 15,
+		  		        height: 15,
+		  		        borderWidth: 1
+		  		      };
+		  		danger8 = {
+		  		        x: danger8_x*step-robotSize/2,
+		  		        y: height-robotSize-danger8_y*step+robotSize/2,
+		  		        width: 15,
+		  		        height: 15,
+		  		        borderWidth: 1
+		  		      };
+		  		danger9 = {
+		  		        x: danger9_x*step-robotSize/2,
+		  		        y: height-robotSize-danger9_y*step+robotSize/2,
+		  		        width: 15,
+		  		        height: 15,
+		  		        borderWidth: 1
+		  		      };
+		  		danger10 = {
+		  		        x: danger10_x*step-robotSize/2,
+		  		        y: height-robotSize-danger10_y*step+robotSize/2,
+		  		        width: 15,
+		  		        height: 15,
+		  		        borderWidth: 1
+		  		      };
+		  		
+		  		drawRedRectangle(danger1, ctx);
+		  		drawRedRectangle(danger2, ctx);
+		  		drawRedRectangle(danger3, ctx);
+		  		drawRedRectangle(danger4, ctx);
+		  		drawRedRectangle(danger5, ctx);
+		  		drawRedRectangle(danger6, ctx);
+		  		drawRedRectangle(danger7, ctx);
+		  		drawRedRectangle(danger8, ctx);
+		  		drawRedRectangle(danger9, ctx);
+		  		drawRedRectangle(danger10, ctx);
+		  	}
+		  	var current_x;
+		  	var current_y;
+		  	var dept_x;
+		  	var dept_y; 
+		  	var map_x;
+		  	var map_y;
+		  	
+		  	function startMission(){
+		  		current_x = $("[name=start_x]").val();
+		  		current_y = $("[name=start_y]").val();
+			  	dept_x = $("[name=dept_x]").val();
+			  	dept_y = $("[name=dept_y]").val(); 
+			  	
+			  	var count = 0;
+			  	
+			  	initRobot(current_x, current_y);
+			  	initDept(dept_x, dept_y);
+			  	
+			  	 $.ajax({
+			            type: "GET",
+			            url: "/get_path",
+			            dataType: "json",
+			            data: { "current_x": current_x, "current_y" : current_y,
+			            	"dept_x" : dept_x, "dept_y" : dept_y, "map_key" : $(".map_key").val()},
+			            success: function(data){
+			            	var i = 1;
+			            	setInterval(function(){
+			            		moveRobot(data, i);
+			            		var current = getCurrentPos();
+			            		
+			            		i++;
+			            	}, 1500);
+			            }
+			  	 });
+		  	}
+		  	function moveRobot(data, i){
+ 				clearRobot();
+ 				current_x = data[i][0];
+ 				current_y = data[i][1];
+	  			initRobot(parseInt(data[i][0]), parseInt(data[i][1]));
+		  	}
+		  	function moveRobotRight(){
+		  		clearRobot();
+		  		initRobot(parseInt(current_x)+1, current_y);
+		  		
+		  		current_x = parseInt(current_x) +1 ;
+		  	}
+		  	function moveRobotUp(){
+		  		clearRobot();
+		  		initRobot(parseInt(current_x), parseInt(current_y)+1);
+		  		
+		  		current_y = parseInt(current_y) +1 ;
+		  	}
+		  	function clearRobot(){
+		  		robot = {
+		  		        x: current_x*step-robotSize/2,
+		  		        y: height-robotSize-current_y*step+robotSize/2,
+		  		        width: 15,
+		  		        height: 15,
+		  		        borderWidth: 1
+		  		      };
+		  		drawGrayRectangle(robot, ctx)
+		  	}
+		  	function initRobot(x, y){
+		  		robot = {
+		  		        x: x*step-robotSize/2,
+		  		        y: height-robotSize-y*step+robotSize/2,
+		  		        width: 15,
+		  		        height: 15,
+		  		        borderWidth: 1
+		  		      };
+		  		drawRectangle(robot, ctx);
+		  	}
+		  	function initDept(x, y){
+		  		ctx.fillStyle = 'lime';
+		  		ctx.fillRect(x*step-robotSize/2, height-robotSize-y*step+robotSize/2, robotSize, robotSize);
+		  	}
+          </script>
+	     {% endblock %}
   </body>
 </html>
 
