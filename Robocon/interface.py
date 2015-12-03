@@ -8,6 +8,7 @@ from SIM import SIM
 simulator = SIM()
         
 class interface(object):
+    FullPath = []
     def __init__(self):
         '''
         Constructor
@@ -47,7 +48,7 @@ class interface(object):
         print self.path[self.curPosition()+1]
         self.setPosition(self.curPosition()+1)
         
-    def explore(self, pathArr, missionMIns): # Explore Logic Included
+    def explore(self, pathArr, missionMIns, targetPos, PathManagerIns): # Explore Logic Included
         self.path = pathArr; # path array
         
         while self.curPosition() != len(self.path)-1:
@@ -60,7 +61,9 @@ class interface(object):
                         ## path[self.curPosition()+1]  <-- Spotted Hazard info      type [a, b]
                 print 'Hazard blob is spotted :', 
                 print self.path[self.curPosition()+1]
-                missionMIns.makeNewPath(self.path[self.curPosition()+1], self.path[self.curPosition()])
+                previousPath = self.path[0 : self.curPosition()+1]                
+                missionMIns.setPreviousPath(previousPath, PathManagerIns)
+                missionMIns.makeNewPath(self.path[self.curPosition()+1], self.path[self.curPosition()], targetPos, PathManagerIns)
                 return 
             
             # Check Color
@@ -125,13 +128,16 @@ class interface(object):
                                     ## arrColorPos Array has Color blob info      type [[a, b], [c, d]]     Minimum 0 point, Maximum 3 point 
                 print 'Color Blob is Spotted',
                 print arrColorPos
+                missionMIns.AddColorBolb(arrColorPos, PathManagerIns)
             
             # Move
             self.move()
             
             # EndofPath
             if self.curPosition() == len(self.path)-1:
+                missionMIns.setPreviousPath(self.path, PathManagerIns)
                 print 'EndOfPath'
+                return 'printPath'
             
             
     

@@ -17,8 +17,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from Robocon.ImgHandler import ImgHandler
 from google.appengine.api import images
 from Robocon.models import Mission
-from ADDON import ADDON
-from ADDON import Map as MapInfo
+from Robocon.PathManager import PathManager
+from Robocon.PathManager import Map as MapInfo
 
 try:
     import json
@@ -220,9 +220,10 @@ def getPath(request):
     
     MapInfoIns = MapInfo(map.map_x, map.map_y, hazardList)
     
-    ADDONIns = ADDON(MapInfoIns, 100)
+    PathManagerIns = PathManager()
+    PathManagerIns.setMapInfo(MapInfoIns, 100)
     
-    result = ADDONIns.findPath(int(current_x), int(current_y), int(dept_x), int(dept_y))
+    result = PathManagerIns.findPath(int(current_x), int(current_y), int(dept_x), int(dept_y))
     
     data = json.dumps(result)
     

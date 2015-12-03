@@ -5,8 +5,7 @@ Created on 2015. 11. 11.
 '''
 from Robocon.Dao import MissionDao, MapDao, RobotDao
 from Robocon.interface import interface
-from Robocon.ADDON import pathGenerator
-
+from PathManager import PathManager
 
 class MissionManager(object):
     def __init__(self):
@@ -14,7 +13,6 @@ class MissionManager(object):
         self.mapDaoIns = MapDao()
         self.robotDaoIns = RobotDao()
         
-    
     def getCurrentMissionList(self):
         return self.missionDaoIns.getAll()
     def getMission(self, key):
@@ -23,15 +21,22 @@ class MissionManager(object):
         return self.mapDaoIns.get(mission.map_key)
     def getRobot(self, mission):
         return self.robotDaoIns.get(mission.robot_key)
-    def start_Explore(self, path):
-        interface.explore(interface(), path, self)
-    def makeNewPath(self, hazard, curPos): # curPos - Start Point 
+    def start_Explore(self, path, targetPos, PathManagerIns):
+        if interface.explore(interface(), path, self, targetPos, PathManagerIns) == 'printPath' :
+            return 'printPath'
+    def makeNewPath(self, hazard, curPos, targetPos, PathManagerIns): # curPos - Start Point 
         print 'Find New Path'
-        pathGenerator(hazard, self, curPos)
-    
+        PathManagerIns.pathGenerator(hazard, self, curPos, targetPos, PathManagerIns)
+    def AddColorBolb(self, colorArr, PathManagerIns):
+        PathManagerIns.addColorBlob(colorArr)
+    def setPreviousPath(self, path, PathManagerIns):
+        PathManagerIns.setPreviousPath(path)
+        
 def main():
     mIns = MissionManager()
-    pathGenerator(0, mIns, 0)
+    PathManagerIns = PathManager()
+    targetPos = [7, 5] # set target pos 
+    PathManagerIns.pathGenerator(0, mIns, 0, targetPos, PathManagerIns)
     
 if __name__ == '__main__':
     main()

@@ -5,9 +5,13 @@ Created on 2015. 11. 29.
 '''
 from Robocon.MapManager import MapManager
 
-class ADDON(object):
-
-	def __init__(self, mapInfo, maxSearchDistance):
+class PathManager(object):
+	HazardArr = []
+	NewHazardArr = []
+	ColorArr = []
+	FullPath = []
+	
+	def setMapInfo(self, mapInfo, maxSearchDistance):
 		self.map = mapInfo
 		self.maxSearchDistance = maxSearchDistance
 		self.heuristic = Heuristic()
@@ -15,10 +19,6 @@ class ADDON(object):
 		self.test = [[[x,y] for y in range(mapInfo.width)] for x in range(mapInfo.height)]
 		
 	def findPath(self, sx, sy, tx, ty):	
-		if self.map.isBlocked(tx, ty):
-			print("Target Point is Blocked!")
-			return None
-		
 		self.nodes[sx][sy].cost = 0
 		self.nodes[sx][sy].depth = 0
 		self.closedList = list()
@@ -69,8 +69,7 @@ class ADDON(object):
 								self.openList.append(neighbour)
 							
 		if self.nodes[tx][ty].parent is None:
-			print("return none! check this")
-			return None			
+			return 20		
 		
 		path = list()
 		target = self.nodes[tx][ty]
@@ -89,6 +88,94 @@ class ADDON(object):
 			invalid = self.map.isBlocked(x, y)
 		valid = not invalid
 		return valid
+	
+	def addColorBlob(self, colorArr):
+		for i in colorArr:
+			self.ColorArr.append(i)
+			
+		print 'accumulated colorblob info : ',
+		print self.ColorArr
+	
+	def setPreviousPath(self, path):
+		if len(self.FullPath) == 0:
+			for i in path:
+				self.FullPath.append(i)
+		else:
+			self.FullPath.pop()
+			for i in path:
+				self.FullPath.append(i)
+				
+		#self.FullPath.append(path)
+		
+	def pathGenerator(self, newHazard, missionMIns, curPos, targetPos, PathManagerIns):
+		if len(self.HazardArr) == 0:
+			self.HazardArr = [[0,2],[1,0],[1,2],[2,0],[2,5],[3,1],[3,3],[4,5],[5,3],[5,5],[6,3],[7,4]]
+			# set from DB
+			
+		# new Hazard append -> get new Hazard Array
+		if newHazard == 0:
+			pass
+		else:
+			try:
+				self.HazardArr.remove(newHazard)
+				print 'Hazard Deleted'
+			except ValueError as e:
+				pass
+			
+			self.HazardArr.append(newHazard)
+			self.NewHazardArr.append(newHazard)
+			print 'hazard appended',
+			print newHazard
+		self.HazardArr.sort()
+		self.NewHazardArr.sort()
+		
+		print 'Hazard Array : ',
+		print self.HazardArr
+		
+		# Set MapInfo
+		MAP = MapManager.getMapInfo(MapManager())
+		MAP.width = 15
+		MAP.height = 17
+		MAP.hazard = self.HazardArr
+		self.setMapInfo(MAP, 500)
+		
+		# set map, explore info
+		if curPos == 0:
+			START = [0, 0]
+		else:
+			START = curPos
+			
+		TARGET = targetPos
+		
+		sx = START[0]
+		sy = START[1]
+		tx = TARGET[0]
+		ty = TARGET[1]
+		
+		PATH = PathManagerIns.findPath(sx, sy, tx, ty)	
+		
+		if PATH == 20:
+			# Target Hazard Popup
+			print 'No Path existed'
+			print 'FullPath : ',
+			print self.FullPath
+			return
+			
+		print 'Path : ',
+		print PATH
+		str = missionMIns.start_Explore(PATH, targetPos, PathManagerIns)
+		if (PATH[len(PATH)-1] in self.HazardArr) and str == 'printPath' :
+			self.setPreviousPath(PATH[0:len(PATH)-2])
+			# Target is Hazard Popup
+			print 'Target is Hazard'
+			print 'FullPath : ',
+			print self.FullPath
+			return
+		elif str == 'printPath' :
+			print 'FullPath : ',
+			print self.FullPath
+			return
+		
 		
 	class Node():
 		def __init__(self, x, y):
@@ -98,7 +185,7 @@ class ADDON(object):
 			self.heuristic = 0
 			self.depth = 0
 			self.parent = None
-						
+			
 class Map(object):
 	def __init__(self, width, height, hazardList):
 		self.width = width
@@ -128,55 +215,7 @@ class Heuristic():
 		result = abs((tx - x)+(ty - y))
 		return result
 	
-def pathGenerator(newHazard, missionMIns, curPos):
-	WIDTH = 7
-	HEIGHT = 8
-	HAZARD = [[0,2],[1,0],[1,2],[2,0],[2,5],[3,1],[3,3],[4,5],[5,3],[5,5],[6,3],[7,4]]
-	
-	# new Hazard append -> get new Hazard Array
-	if newHazard == 0:
-		pass
-	else:
-		try:
-			HAZARD.remove(newHazard)
-			print 'Hazard Deleted'
-		except ValueError as e:
-			pass
-		
-		HAZARD.append(newHazard)
-		print 'hazard appended',
-		print newHazard
-	HAZARD.sort()
-	
-	print 'Hazard Array : ',
-	print HAZARD
-	
-	
-	# set map, explore info
-	if curPos == 0:
-		START = [0, 0]
-	else:
-		START = curPos
-		
-	TARGET = [7, 5]
-	
-	sx = START[0]
-	sy = START[1]
-	tx = TARGET[0]
-	ty = TARGET[1]
-	
-	MAP = MapManager.getMapInfo(MapManager())
-	
-	MAP.width = 15
-	MAP.height = 17
-	MAP.hazard = HAZARD
-	
-	ADDONIns = ADDON(MAP, 500)
-	PATH = ADDONIns.findPath(sx, sy, tx, ty)
-	print 'new Path gotten, go explore'
-	print 'Path : ',
-	print PATH
-	missionMIns.start_Explore(PATH)
+
 
 
 

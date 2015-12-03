@@ -1,9 +1,9 @@
 '''
 Created on 2015. 11. 11.
 
-@author: ahn
+@author: Kim
 '''
-from random import random, randrange
+from random import random
 
 class SIM(object):
     def __init__(self):
