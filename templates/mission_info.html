@@ -337,11 +337,10 @@
 			            data: { "current_x": current_x, "current_y" : current_y,
 			            	"dept_x" : dept_x, "dept_y" : dept_y, "map_key" : $(".map_key").val()},
 			            success: function(data){
+			            	alert(data);
 			            	var i = 1;
 			            	setInterval(function(){
 			            		moveRobot(data, i);
-			            		var current = getCurrentPos();
-			            		
 			            		i++;
 			            	}, 1500);
 			            }

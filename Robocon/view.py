@@ -77,6 +77,8 @@ def missionInfo(request):
     
     if(mission.map_key != None) :
         map = MissionManagerIns.getMap(mission)
+        print map.map_x
+        print map.map_y
         
     if(mission.robot_key != None) :
         robot = MissionManagerIns.getRobot(mission)
@@ -224,6 +226,6 @@ def getPath(request):
     
     result = ADDONIns.findPath(int(current_x), int(current_y), int(dept_x), int(dept_y))
     
-    data = json.dumps(result)
+    data = json.dumps(result, '1')
     
     return HttpResponse(data, content_type='application/json')

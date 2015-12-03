@@ -25,8 +25,6 @@ class Map(db.Model):
     map_danger9_y = db.IntegerProperty()
     map_danger10_x = db.IntegerProperty()
     map_danger10_y = db.IntegerProperty()
-    width = map_y
-    height = map_x
     newPos = []
     newPos.append([map_danger1_x, map_danger1_y])
     newPos.append([map_danger2_x, map_danger2_y])
@@ -45,10 +43,10 @@ class Map(db.Model):
     date = db.DateTimeProperty(auto_now_add=True)
     
     def getWidth(self):
-        return self.width
+        return self.map_x
     
     def getHeight(self):
-        return self.height
+        return self.map_y
     
     def pathFinderVisited(self, x, y):
         self.visited.append([x, y])

@@ -8,6 +8,7 @@ from google.appengine.ext import db
 from models import Map
 
 mapDaoIns = MapDao()
+
 class MapManager():
     def addMap(self, map):
         mapDaoIns.add(map)
