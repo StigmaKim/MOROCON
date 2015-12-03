@@ -35,8 +35,9 @@ class MissionManager(object):
 def main():
     mIns = MissionManager()
     PathManagerIns = PathManager()
-    targetPos = [7, 5] # set target pos 
-    PathManagerIns.pathGenerator(0, mIns, 0, targetPos, PathManagerIns)
+    targetPos = [7, 5] # set target position
+    startPos = [0, 0] # set start position
+    PathManagerIns.pathGenerator(0, mIns, startPos, targetPos, PathManagerIns)
     
 if __name__ == '__main__':
     main()
