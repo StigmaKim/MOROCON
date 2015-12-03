@@ -3,8 +3,7 @@ Created on 2015. 11. 11.
 
 @author: ahn
 '''
-from Robocon.Dao import MapDao
-from google.appengine.ext import db
+from Morocon.Dao import MapDao
 from models import Map
 
 mapDaoIns = MapDao()

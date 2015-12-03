@@ -3,7 +3,7 @@ from django.conf.urls.defaults import patterns, include, url
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
-from Robocon.view import main, map, missionInfo, search, mapManage, mapAdd, mapAddPro, mapDelete, robot, robotAdd,\
+from Morocon.view import main, map, missionInfo, search, mapManage, mapAdd, mapAddPro, mapDelete, robot, robotAdd,\
     robotAddPro, robotSelectForm, showImage, missionAdd, mapSelect, robotSelectPro,\
     getPath
 from django.http.request import HttpRequest

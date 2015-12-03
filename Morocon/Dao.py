@@ -4,7 +4,7 @@ Created on 2015. 11. 5.
 @author: ahn
 '''
 from google.appengine.ext import db
-from Robocon.models import Map, Robot, Mission
+from Morocon.models import Map, Robot, Mission
 
 class MapDao(object):
     def add(self, map):

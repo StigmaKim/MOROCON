@@ -128,7 +128,7 @@ class interface(object):
                                     ## arrColorPos Array has Color blob info      type [[a, b], [c, d]]     Minimum 0 point, Maximum 3 point 
                 print 'Color Blob is Spotted',
                 print arrColorPos
-                missionMIns.AddColorBolb(arrColorPos, PathManagerIns)
+                missionMIns.AddColorBlob(arrColorPos, PathManagerIns)
             
             # Move
             self.move()

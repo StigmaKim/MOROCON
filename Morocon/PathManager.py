@@ -3,7 +3,7 @@ Created on 2015. 11. 29.
 
 @author: HANJU
 '''
-from Robocon.MapManager import MapManager
+from Morocon.MapManager import MapManager
 
 class PathManager(object):
 	HazardArr = []

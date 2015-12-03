@@ -3,9 +3,9 @@ Created on 2015. 11. 11.
 
 @author: ahn
 '''
-from Robocon.Dao import MissionDao, MapDao, RobotDao
+from Morocon.Dao import MissionDao, MapDao, RobotDao
 from Robot.interface import interface
-from PathManager import PathManager
+from PathManager import PathManager 
 
 class MissionManager(object):
     def __init__(self):
@@ -27,7 +27,7 @@ class MissionManager(object):
     def makeNewPath(self, hazard, curPos, targetPos, PathManagerIns): # curPos - Start Point 
         print 'Find New Path'
         PathManagerIns.pathGenerator(hazard, self, curPos, targetPos, PathManagerIns)
-    def AddColorBolb(self, colorArr, PathManagerIns):
+    def AddColorBlob(self, colorArr, PathManagerIns):
         PathManagerIns.addColorBlob(colorArr)
     def setPreviousPath(self, path, PathManagerIns):
         PathManagerIns.setPreviousPath(path)

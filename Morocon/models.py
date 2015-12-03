@@ -1,5 +1,5 @@
-from django.db import models
-from google.appengine.ext import db
+
+from google.appengine.ext import db 
   
 class Map(db.Model):
     name = db.StringProperty()

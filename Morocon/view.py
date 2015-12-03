@@ -3,22 +3,22 @@ Created on 2015. 10. 31.
 @author: ahn
 '''
 from django.shortcuts import render_to_response
-from Robocon.models import Map, Robot
+from Morocon.models import Map, Robot
 from google.appengine.ext import db
 import cgi
 from django.http.response import HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
-from Robocon.MapManager import MapManager
+from Morocon.MapManager import MapManager 
 import logging
-from Robocon.RobotManager import RobotManager
-from Robocon.MissionManager import MissionManager
+from Morocon.RobotManager import RobotManager
+from Morocon.MissionManager import MissionManager
 from django.http import HttpResponse, HttpResponseRedirect
-from Robocon.ImgHandler import ImgHandler
+from Morocon.ImgHandler import ImgHandler
 from google.appengine.api import images
-from Robocon.models import Mission
-from Robocon.PathManager import PathManager
-from Robocon.PathManager import Map as MapInfo
+from Morocon.models import Mission
+from Morocon.PathManager import PathManager
+from Morocon.PathManager import Map as MapInfo
 
 try:
     import json
