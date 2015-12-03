@@ -33,8 +33,43 @@
   	  			{% endif %}
   	  		</div>
   	  		<div class="col-sm-3 person">
-  	  			<h4><strong>발견된 사람</strong></h4>
+  	  			<h4><strong>지도 정보</strong></h4>
   	  			<canvas id="clock"></canvas>
+  	  			<div class="recinfo">
+  	  				<div class="recred">
+  	  				</div>
+  	  				<div class="des">
+  	  					Hazard
+  	  				</div>
+  	  			</div>
+  	  			<div class="recinfo">
+  	  				<div class="recyellow">
+  	  				</div>
+  	  				<div class="des">
+  	  					color blob
+  	  				</div>
+  	  			</div>
+  	  			<div class="recinfo">
+  	  				<div class="reclime">
+  	  				</div>
+  	  				<div class="des">
+  	  					도착지
+  	  				</div>
+  	  			</div>
+  	  			<div class="recinfo">
+  	  				<div class="recgray">
+  	  				</div>
+  	  				<div class="des">
+  	  					경로
+  	  				</div>
+  	  			</div>
+  	  			<div class="recinfo">
+  	  				<div class="recskyblue">
+  	  				</div>
+  	  				<div class="des">
+  	  					로봇
+  	  				</div>
+  	  			</div>
   	  		</div>
   	  	</div>
   	  	<div class="row">
@@ -324,6 +359,8 @@
 		  		current_y = $("[name=start_y]").val();
 			  	dept_x = $("[name=dept_x]").val();
 			  	dept_y = $("[name=dept_y]").val(); 
+			  	var hazard_list;
+			  	var color_blob_list;
 			  	
 			  	var count = 0;
 			  	
@@ -337,20 +374,87 @@
 			            data: { "current_x": current_x, "current_y" : current_y,
 			            	"dept_x" : dept_x, "dept_y" : dept_y, "map_key" : $(".map_key").val()},
 			            success: function(data){
-			            	alert(data);
 			            	var i = 1;
+			            	hazard_list = data.hazard;
+			            	color_blob_list = data.colorBlob;
+			            	
 			            	setInterval(function(){
-			            		moveRobot(data, i);
+			            		
+			            		moveRobot(data.path, i);
+			            		hazardDetect(hazard_list);
+			            		colorBlobDetect(color_blob_list);
+			            		
 			            		i++;
 			            	}, 1500);
 			            }
 			  	 });
 		  	}
+		  	function hazardDetect(hazard_list){
+		  		for(i=0;i<hazard_list.length;i++){
+		  			if(somethingRight(current_x, current_y, hazard_list[i][0], hazard_list[i][1])){
+		  				alert("Hazard가 발견되었습니다.");
+		  				initHazard(hazard_list[i][0], hazard_list[i][1]);
+		  			}
+		  		}
+		  	}
+		  	function colorBlobDetect(color_blob_list){
+		  		for(i=0;i<color_blob_list.length;i++){
+		  			if(somethingRight(current_x, current_y, color_blob_list[i][0], color_blob_list[i][1])){
+		  				alert("Color Blob가 발견되었습니다.");
+		  				initColorBlob(color_blob_list[i][0], color_blob_list[i][1]);
+		  			}
+		  			if(somethingLeft(current_x, current_y, color_blob_list[i][0], color_blob_list[i][1])){
+		  				alert("Color Blob가 발견되었습니다.");
+		  				initColorBlob(color_blob_list[i][0], color_blob_list[i][1]);
+		  			}
+		  			if(somethingUp(current_x, current_y, color_blob_list[i][0], color_blob_list[i][1])){
+		  				alert("Color Blob가 발견되었습니다.");
+		  				initColorBlob(color_blob_list[i][0], color_blob_list[i][1]);
+		  			}
+		  			if(somethingDown(current_x, current_y, color_blob_list[i][0], color_blob_list[i][1])){
+		  				alert("Color Blob가 발견되었습니다.");
+		  				initColorBlob(color_blob_list[i][0], color_blob_list[i][1]);
+		  			}
+		  		}
+		  	}
+		  	function somethingRight(x,y,something_x,something_y){
+		  		if((parseInt(x)+1 == parseInt(something_x)) && (parseInt(y) == parseInt(something_y))){
+		  			return true;
+		  		}
+		  	}
+		  	function somethingLeft(x,y,something_x,something_y){
+		  		if((parseInt(x)-1 == parseInt(something_x)) && (parseInt(y) == parseInt(something_y))){
+		  			return true;
+		  		}
+		  	}
+		  	function somethingUp(x,y,something_x,something_y){
+		  		if((parseInt(x) == parseInt(something_x)) && (parseInt(y)+1 == parseInt(something_y))){
+		  			return true;
+		  		}
+		  	}
+		  	function somethingDown(x,y,something_x,something_y){
+		  		if((parseInt(x) == parseInt(something_x)) && (parseInt(y)-1 == parseInt(something_y))){
+		  			return true;
+		  		}
+		  	}
 		  	function moveRobot(data, i){
- 				clearRobot();
+ 				clearRobot(); // 흔적남기기
+ 				/* 다음로 이동 */
  				current_x = data[i][0];
  				current_y = data[i][1];
 	  			initRobot(parseInt(data[i][0]), parseInt(data[i][1]));
+		  	}
+		  	function showColorBlob(data, i){
+		  		if(data[i] != ''){
+		  			alert("Color Blob이 발견되었습니다.")
+		  			initColorBlob(parseInt(data[i][0]), parseInt(data[i][1]))
+		  		}
+		  	}
+		  	function showHazard(data, i){
+				if(data[i] != ''){
+					alert("Hazard가 발견되었습니다.")
+					initHazard(parseInt(data[i][0]), parseInt(data[i][1]))
+		  		}	
 		  	}
 		  	function moveRobotRight(){
 		  		clearRobot();
@@ -386,6 +490,14 @@
 		  	}
 		  	function initDept(x, y){
 		  		ctx.fillStyle = 'lime';
+		  		ctx.fillRect(x*step-robotSize/2, height-robotSize-y*step+robotSize/2, robotSize, robotSize);
+		  	}
+		  	function initColorBlob(x, y){
+		  		ctx.fillStyle = 'yellow';
+		  		ctx.fillRect(x*step-robotSize/2, height-robotSize-y*step+robotSize/2, robotSize, robotSize);
+		  	}
+		  	function initHazard(x, y){
+		  		ctx.fillStyle = 'red';
 		  		ctx.fillRect(x*step-robotSize/2, height-robotSize-y*step+robotSize/2, robotSize, robotSize);
 		  	}
           </script>

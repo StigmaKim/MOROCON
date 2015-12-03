@@ -8,3 +8,11 @@
 .robot {width:730px; height:400px; border:1px solid #cdcdcd ;text-align:center}
 .robot img {width:100px;height:100px;}
 body #mission_info {font-family: Nanum Barun Gothic,"나눔고딕", NanumGothic, Malgun Gothic, "돋움", Dotum, AppleGothic, sans-serif !important;}
+.recinfo {display:inline-block;}
+.recinfo .recred {width:50px;height:50px;background-color:red}
+.recinfo .recyellow {width:50px;height:50px;background-color:yellow}
+.recinfo .recgreen {width:50px;height:50px;background-color:green}
+.recinfo .recgray {width:50px;height:50px;background-color:gray}
+.recinfo .reclime {width:50px;height:50px;background-color:lime}
+.recinfo .recskyblue{width:50px;height:50px;background-color:skyblue}
+.recinfo .des {width:100px;height:50px;}

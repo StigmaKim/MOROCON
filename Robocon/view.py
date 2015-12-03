@@ -219,13 +219,21 @@ def getPath(request):
                   [map.map_danger9_x, map.map_danger9_y],
                   [map.map_danger10_x, map.map_danger10_y],
                   ]
+    newHazard =  [[3,6], [1,5], [3,7]]
+    colorBlob =  [[5, 4], [4,7]]
     
     MapInfoIns = MapInfo(map.map_x, map.map_y, hazardList)
     
     ADDONIns = ADDON(MapInfoIns, 100)
     
-    result = ADDONIns.findPath(int(current_x), int(current_y), int(dept_x), int(dept_y))
+    result = {
+              'path' : ADDONIns.findPath(int(current_x), int(current_y), int(dept_x), int(dept_y)),
+              'hazard' : newHazard,
+              'colorBlob' : colorBlob}
     
-    data = json.dumps(result, '1')
+    data = json.dumps(result)
     
     return HttpResponse(data, content_type='application/json')
+
+
+
