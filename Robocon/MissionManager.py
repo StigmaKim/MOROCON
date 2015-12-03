@@ -4,7 +4,7 @@ Created on 2015. 11. 11.
 @author: ahn
 '''
 from Robocon.Dao import MissionDao, MapDao, RobotDao
-from Robocon.interface import interface
+from Robot.interface import interface
 from PathManager import PathManager
 
 class MissionManager(object):

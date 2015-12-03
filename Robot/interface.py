@@ -3,9 +3,9 @@ Created on 2015. 11. 26.
 
 @author: Kim
 '''
-from SIM import SIM
+from Robot.SIM import SIM
 
-simulator = SIM()
+simulator = SIM() 
         
 class interface(object):
     FullPath = []
