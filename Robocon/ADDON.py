@@ -3,7 +3,6 @@ Created on 2015. 11. 29.
 
 @author: HANJU
 '''
-from Robocon.MissionManager import MissionManager
 from Robocon.MapManager import MapManager
 
 class ADDON(object):
@@ -129,12 +128,36 @@ class Heuristic():
 		result = abs((tx - x)+(ty - y))
 		return result
 	
-def main():
+def pathGenerator(newHazard, missionMIns, curPos):
 	WIDTH = 7
 	HEIGHT = 8
 	HAZARD = [[0,2],[1,0],[1,2],[2,0],[2,5],[3,1],[3,3],[4,5],[5,3],[5,5],[6,3],[7,4]]
+	
+	# new Hazard append -> get new Hazard Array
+	if newHazard == 0:
+		pass
+	else:
+		try:
+			HAZARD.remove(newHazard)
+			print 'Hazard Deleted'
+		except ValueError as e:
+			pass
+		
+		HAZARD.append(newHazard)
+		print 'hazard appended',
+		print newHazard
 	HAZARD.sort()
-	START = [0, 0]
+	
+	print 'Hazard Array : ',
+	print HAZARD
+	
+	
+	# set map, explore info
+	if curPos == 0:
+		START = [0, 0]
+	else:
+		START = curPos
+		
 	TARGET = [7, 5]
 	
 	sx = START[0]
@@ -150,15 +173,9 @@ def main():
 	
 	ADDONIns = ADDON(MAP, 500)
 	PATH = ADDONIns.findPath(sx, sy, tx, ty)
-	
-	MissionManager.start_Explore(MissionManager(),PATH)
+	print 'new Path gotten, go explore'
+	print 'Path : ',
 	print PATH
+	missionMIns.start_Explore(PATH)
 
-	
-if __name__ == '__main__':
-	main()
-	
-
-
-			
 			

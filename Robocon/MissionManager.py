@@ -5,6 +5,7 @@ Created on 2015. 11. 11.
 '''
 from Robocon.Dao import MissionDao, MapDao, RobotDao
 from Robocon.interface import interface
+from Robocon.ADDON import pathGenerator
 
 
 class MissionManager(object):
@@ -24,8 +25,16 @@ class MissionManager(object):
         return self.robotDaoIns.get(mission.robot_key)
     def start_Explore(self, path):
         interface.explore(interface(), path, self)
-    def makeNewPath(self, hazard):
-        print 'here'
+    def makeNewPath(self, hazard, curPos): # curPos - Start Point 
+        print 'Find New Path'
+        pathGenerator(hazard, self, curPos)
+    
+def main():
+    mIns = MissionManager()
+    pathGenerator(0, mIns, 0)
+    
+if __name__ == '__main__':
+    main()
     
     
     

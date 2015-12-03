@@ -39,10 +39,12 @@ class interface(object):
         return self.path[self.curPosition()]
         
     def turn(self):
-        print 'turn!'
+        #print 'turn!'
+        pass
     
     def move(self):
-        print 'move forward!'
+        print 'move forward!, curPosition :',
+        print self.path[self.curPosition()+1]
         self.setPosition(self.curPosition()+1)
         
     def explore(self, pathArr, missionMIns): # Explore Logic Included
@@ -58,7 +60,7 @@ class interface(object):
                         ## path[self.curPosition()+1]  <-- Spotted Hazard info      type [a, b]
                 print 'Hazard blob is spotted :', 
                 print self.path[self.curPosition()+1]
-                missionMIns.makeNewPath(self.path[self.curPosition()+1])
+                missionMIns.makeNewPath(self.path[self.curPosition()+1], self.path[self.curPosition()])
                 return 
             
             # Check Color
@@ -126,6 +128,10 @@ class interface(object):
             
             # Move
             self.move()
+            
+            # EndofPath
+            if self.curPosition() == len(self.path)-1:
+                print 'EndOfPath'
             
             
     
