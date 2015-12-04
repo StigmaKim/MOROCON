@@ -3,22 +3,22 @@ Created on 2015. 10. 31.
 @author: ahn
 '''
 from django.shortcuts import render_to_response
-from Robocon.models import Map, Robot
+from Morocon.models import Map, Robot
 from google.appengine.ext import db
 import cgi
 from django.http.response import HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
-from Robocon.MapManager import MapManager
+from Morocon.MapManager import MapManager 
 import logging
-from Robocon.RobotManager import RobotManager
-from Robocon.MissionManager import MissionManager
+from Morocon.RobotManager import RobotManager
+from Morocon.MissionManager import MissionManager
 from django.http import HttpResponse, HttpResponseRedirect
-from Robocon.ImgHandler import ImgHandler
+from Morocon.ImgHandler import ImgHandler
 from google.appengine.api import images
-from Robocon.models import Mission
-from ADDON import ADDON
-from ADDON import Map as MapInfo
+from Morocon.models import Mission
+from Morocon.PathManager import PathManager
+from Morocon.PathManager import Map as MapInfo
 
 try:
     import json
@@ -208,28 +208,32 @@ def getPath(request):
     
     map = MapManagerIns.getMap(map_key)
     
-    hazardList = [[map.map_danger1_x, map.map_danger1_y],
-                  [map.map_danger2_x, map.map_danger2_y],
-                  [map.map_danger3_x, map.map_danger3_y],
-                  [map.map_danger4_x, map.map_danger4_y],
-                  [map.map_danger5_x, map.map_danger5_y],
-                  [map.map_danger6_x, map.map_danger6_y],
-                  [map.map_danger7_x, map.map_danger7_y],
-                  [map.map_danger8_x, map.map_danger8_y],
-                  [map.map_danger9_x, map.map_danger9_y],
-                  [map.map_danger10_x, map.map_danger10_y],
+    hazardList = [[int(map.map_danger1_x), int(map.map_danger1_y)],
+                  [int(map.map_danger2_x), int(map.map_danger2_y)],
+                  [int(map.map_danger3_x), int(map.map_danger3_y)],
+                  [int(map.map_danger4_x), int(map.map_danger4_y)],
+                  [int(map.map_danger5_x), int(map.map_danger5_y)],
+                  [int(map.map_danger6_x), int(map.map_danger6_y)],
+                  [int(map.map_danger7_x), int(map.map_danger7_y)],
+                  [int(map.map_danger8_x), int(map.map_danger8_y)],
+                  [int(map.map_danger9_x), int(map.map_danger9_y)],
+                  [int(map.map_danger10_x), int(map.map_danger10_y)],
                   ]
-    newHazard =  [[3,6], [1,5], [3,7]]
-    colorBlob =  [[5, 4], [4,7]]
     
     MapInfoIns = MapInfo(map.map_x, map.map_y, hazardList)
     
-    ADDONIns = ADDON(MapInfoIns, 100)
+    PathManagerIns = PathManager()
+    PathManagerIns.setMapInfo(MapInfoIns, 100)
+    
+    mIns = MissionManager()
+    PathManagerIns = PathManager()
+    targetPos = [int(dept_x), int(dept_y)] # set target position
+    startPos = [int(current_x), int(current_y)] # set start position
     
     result = {
-              'path' : ADDONIns.findPath(int(current_x), int(current_y), int(dept_x), int(dept_y)),
-              'hazard' : newHazard,
-              'colorBlob' : colorBlob}
+              'path' : PathManagerIns.pathGenerator(0, mIns, startPos, targetPos, PathManagerIns, hazardList),
+              'hazard' : PathManagerIns.NewHazardArr,
+              'colorBlob' : PathManagerIns.ColorArr}
     
     data = json.dumps(result)
     
