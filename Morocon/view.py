@@ -238,3 +238,4 @@ def getPath(request):
     data = json.dumps(FullPath)
     
     return HttpResponse(data, content_type='application/json')
+
