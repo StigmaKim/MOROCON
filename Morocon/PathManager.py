@@ -138,12 +138,14 @@ class PathManager(object):
 		print 'Hazard Array : ',
 		print self.HazardArr
 		
+		"""
 		# Set MapInfo
 		MAP = MapManager.getMapInfo(MapManager())
 		MAP.width = 15
 		MAP.height = 17
 		MAP.hazard = self.HazardArr
 		self.setMapInfo(MAP, 500)
+		"""
 		
 		# set map, explore info
 		if curPos == 0:

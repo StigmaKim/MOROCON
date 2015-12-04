@@ -222,8 +222,19 @@ def getPath(request):
     
     MapInfoIns = MapInfo(map.map_x, map.map_y, hazardList)
     
+    mIns = MissionManager()
     PathManagerIns = PathManager()
+    startPos = [int(current_x), int(current_y)] # set start position
+    targetPos = [int(dept_x), int(dept_y)] # set target position
+    
     PathManagerIns.setMapInfo(MapInfoIns, 100)
+    PathManagerIns.pathGenerator(0, mIns, startPos, targetPos, PathManagerIns)
+    
+    # Type of below 4 value is 'Array' 
+    FullPath = PathManagerIns.FullPath # Full Path from current to dept
+    Colorblob = PathManagerIns.ColorArr 
+    NewHazardBlob = PathManagerIns.NewHazardArr # only new
+    HazzardBlob = PathManagerIns.HazardArr # Previous + new
     
     mIns = MissionManager()
     PathManagerIns = PathManager()
@@ -235,9 +246,6 @@ def getPath(request):
               'hazard' : PathManagerIns.NewHazardArr,
               'colorBlob' : PathManagerIns.ColorArr}
     
-    data = json.dumps(result)
+    data = json.dumps(FullPath)
     
     return HttpResponse(data, content_type='application/json')
-
-
-
