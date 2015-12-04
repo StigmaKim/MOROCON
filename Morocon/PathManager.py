@@ -11,6 +11,7 @@ class PathManager(object):
 		self.NewHazardArr = []
 		self.ColorArr = []
 		self.FullPath = []
+		self.map = None
 	
 	def getColorArr(self):
 		return self.ColorArr
@@ -113,9 +114,9 @@ class PathManager(object):
 				
 		#self.FullPath.append(path)
 		
-	def pathGenerator(self, newHazard, missionMIns, curPos, targetPos, PathManagerIns, HazardArr):
+	def pathGenerator(self, newHazard, missionMIns, curPos, targetPos, PathManagerIns):
 		if len(self.HazardArr) == 0:
-			self.HazardArr = HazardArr
+			self.HazardArr = self.map.hazard
 			# set from DB
 			
 		# new Hazard append -> get new Hazard Array

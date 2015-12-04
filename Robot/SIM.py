@@ -12,7 +12,7 @@ class SIM(object):
         '''
         
     HazardPossi = 0.1 # Hazard Blob spot possibility
-    ColorPossi = 0.2 # Color Blob spot possibility
+    ColorPossi = 0.1 # Color Blob spot possibility
     
     # For getHazardInfo
     def checkHazard(self):

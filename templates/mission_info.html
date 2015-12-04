@@ -391,7 +391,15 @@
 		  	function hazardDetect(hazard_list){
 		  		for(i=0;i<hazard_list.length;i++){
 		  			if(somethingRight(current_x, current_y, hazard_list[i][0], hazard_list[i][1])){
-		  				alert("Hazard가 발견되었습니다.");
+		  				initHazard(hazard_list[i][0], hazard_list[i][1]);
+		  			}
+		  			if(somethingLeft(current_x, current_y, hazard_list[i][0], hazard_list[i][1])){
+		  				initHazard(hazard_list[i][0], hazard_list[i][1]);
+		  			}
+		  			if(somethingUp(current_x, current_y, hazard_list[i][0], hazard_list[i][1])){
+		  				initHazard(hazard_list[i][0], hazard_list[i][1]);
+		  			}
+		  			if(somethingDown(current_x, current_y, hazard_list[i][0], hazard_list[i][1])){
 		  				initHazard(hazard_list[i][0], hazard_list[i][1]);
 		  			}
 		  		}
@@ -399,19 +407,15 @@
 		  	function colorBlobDetect(color_blob_list){
 		  		for(i=0;i<color_blob_list.length;i++){
 		  			if(somethingRight(current_x, current_y, color_blob_list[i][0], color_blob_list[i][1])){
-		  				alert("Color Blob가 발견되었습니다.");
 		  				initColorBlob(color_blob_list[i][0], color_blob_list[i][1]);
 		  			}
 		  			if(somethingLeft(current_x, current_y, color_blob_list[i][0], color_blob_list[i][1])){
-		  				alert("Color Blob가 발견되었습니다.");
 		  				initColorBlob(color_blob_list[i][0], color_blob_list[i][1]);
 		  			}
 		  			if(somethingUp(current_x, current_y, color_blob_list[i][0], color_blob_list[i][1])){
-		  				alert("Color Blob가 발견되었습니다.");
 		  				initColorBlob(color_blob_list[i][0], color_blob_list[i][1]);
 		  			}
 		  			if(somethingDown(current_x, current_y, color_blob_list[i][0], color_blob_list[i][1])){
-		  				alert("Color Blob가 발견되었습니다.");
 		  				initColorBlob(color_blob_list[i][0], color_blob_list[i][1]);
 		  			}
 		  		}
